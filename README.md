@@ -23,7 +23,7 @@ devtools::install_github("magnusdv/forrel")
 This script utilizes two input files:
 1. A file containing genetic information of individuals, following the schema below:
 
-| id | fid | mid | sex | <rs1> | <rs2> | <rs3> | <rs4> | <rs5> |
+| id | fid | mid | sex | rs1 | rs2 | rs3 | rs4 | rs5 |
 |----|-----|-----|-----|-------|-------|-------|-------|-------|
 | 1  | 0   | 0   | 1   | 1/2   | 1/2   | 1/1   | 1/2   | 1/2   |
 | 2  | 0   | 0   | 1   | 1/1   | 1/2   | 1/2   | 2/2   | 1/2   |
