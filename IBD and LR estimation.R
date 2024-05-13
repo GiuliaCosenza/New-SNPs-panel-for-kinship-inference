@@ -1,3 +1,4 @@
+```R
 ############################################################################################
 ###----------Pedigree creation from genotype data with pedbuildr------------###
 ############################################################################################
@@ -198,3 +199,4 @@ for (i in 1:nrow(checkpairwise_result)) {
 
 #--------Environment cleaning-------------#
 rm(list = ls()[!(ls() %in% c("pedlist", "kinshipIBD", "checkpairwise_result"))])
+```
