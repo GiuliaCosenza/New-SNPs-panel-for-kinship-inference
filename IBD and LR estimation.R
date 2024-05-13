@@ -48,7 +48,6 @@ library('forrel')
 
 ##Load the file containing genetic information of 18000 individuals (dataframe 18000*10381)
 file<-read.csv("genotypes.csv", sep = ',', header = FALSE)
-file<-file[,-c(2,4,6,8,10,11)]
 
 ##Build a new dataframe from the first one with correctly renamed columns 
 ##and eliminating parent information (mid and fid always =0)
