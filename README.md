@@ -14,8 +14,9 @@ If you haven't already, you'll need to install R. You can download it from the [
 Make sure you have the required R packages installed. You can install them by running the following command in your R console:
 
 ```R
-install.packages(c("LDlinkR", "remotes"))
-remotes::install_github("CBIIT/LDlinkR")
+install.packages(c("pedtools", "devtools", "usethis"))
+devtools::install_github("magnusdv/pedbuildr")
+devtools::install_github("magnusdv/forrel")
 ```
 
 #### 1.2 Input files
@@ -55,5 +56,6 @@ rs3 | NA
 #### 2.1 Install Required Packages
 Make sure you have the required R packages installed. You can install them by running the following command in your R console:
 ```R
-install.packages(c("pedbuildr", "pedtools", "devtools", "forrel", "usethis"))
+install.packages(c("LDlinkR", "remotes"))
+remotes::install_github("CBIIT/LDlinkR")
 ```
