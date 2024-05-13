@@ -1,39 +1,37 @@
 ############################################################################################
-###----------creazione di pedigree a partire da dati genotipici con pedbuildr------------###
+###----------Pedigree creation from genotype data with pedbuildr------------###
 ############################################################################################
 
-
 ################################################################
-##prima di iniziare assicurarsi di avere pronti due file csv:  #
-##(1)Un file contenete le info genetiche degli individui,      #
-##   secondo il seguente schema (header= TRUE)                 #   
+##Before starting, make sure you have two csv files ready:    #
+##(1)A file containing genetic information of individuals,     #
+##   following the following schema (header= TRUE)             #   
 ##                                                             #
 ##   id fid mid sex  <rs1> <rs2> <rs3> <rs4> <rs5>             #
 #     1   0   0   1   1/2   1/2   1/1   1/2   1/2              #
 #     2   0   0   1   1/1   1/2   1/2   2/2   1/2              #
 #     3   0   0   1   1/1   1/2   1/2   2/2   1/1              #
 ##                                                             #
-##(2)Un file con le info (rs e frequenza allelica)             #
-##   relative ai marcatori,                                    #
-##   secondo il seguente schema (header= FALSE)                # 
+##(2)A file containing information (rs and allele frequency)   #
+##   related to the markers,                                   #
+##   following the following schema (header= FALSE)            # 
 ##                                                             #
 ##    rs1  NA                                                  #
 ##     1   0.5                                                 #
 ##     2   0.5                                                 #
 ##    rs2  NA                                                  #
-##     1   0.75      Mettere prima tutti                       #
-##     2   0.25     i marcatori diallelici                     #
-##    rs3  NA       seguiti dai triallelici                    #
-##     1   0.33     ecc...                                     #
+##     1   0.75      Place all diallelic markers first         #
+##     2   0.25     followed by triallelic ones                #
+##    rs3  NA                                                  #
+##     1   0.33     etc...                                     #
 ##     2   0.33                                                #
 ##     3   0.33                                                #
 ##                                                             #
 ##                                                             #
 ################################################################
 
-
 #------------------------------------------------#
-#|    caricamento dei pacchetti essenziali      |#
+#|        Load essential packages               |#
 #------------------------------------------------#
 
 #install.packages("pedbuildr")
@@ -51,17 +49,16 @@ library('forrel')
 
 
 #------------------------------------------------#
-#|  costruzione del ped file con le info        |#
-#|  genotipiche degli individui della coorte    |#
+#|  Build the ped file with genotype info       |#
+#|  of the individuals in the cohort             |#
 #------------------------------------------------#
 
-
-##carico il file contenente le informazioni genotipiche dei 18000 individui (dataframe 18000*10381)
-file<-read.csv("myped-out-from-ped2-10000repl.csv", sep = ',', header = FALSE)
+##Load the file containing genetic information of 18000 individuals (dataframe 18000*10381)
+file<-read.csv("genotypes.csv", sep = ',', header = FALSE)
 file<-file[,-c(2,4,6,8,10,11)]
 
-##costruisco un nuovo dataframe a partire dal primo con le colonne rinominate correttamente 
-##ed eliminando le informazioni relative ai genitori (mid e fid sempre =0)
+##Build a new dataframe from the first one with correctly renamed columns 
+##and eliminating parent information (mid and fid always =0)
 ped<-as.data.frame(file[,1:2])
 ped<-cbind(ped, rep(0,length(ped[,1])))
 ped<-cbind(ped, rep(0,length(ped[,1])))
@@ -78,33 +75,33 @@ for ( i in vect){
 names<-read.csv("Header_familias.csv", sep = ';')
 names(ped)[6:length(ped[1,])]<-names(names)
 
-#--------Pulizia ambiente-------------#
+#--------Environment cleaning-------------#
 rm(list = ls()[!(ls() %in% "ped")])
 
 #--------------------------------------------------------------#
-#|        Rimuovo i marcatori in linkage Disequilibrium       |#
+#|        Remove markers in linkage Disequilibrium             |#
 #--------------------------------------------------------------#
 removed<-read.csv('rem.csv', header = TRUE, sep = ',')
 ped<-ped[,-c(removed[,2])]
 
 #------------------------------------------------#
-#|  costruzione dell'oggetto con le info        |#
-#|  sui marcatori degli individui della coorte  |#
+#|  Build object with marker info               |#
+#|  of the individuals in the cohort            |#
 #------------------------------------------------#
 
-##ATTENZIONE: non lanciare i comandi automaticamente, adattali ai tuoi file##
+##ATTENTION: do not run the commands automatically, adapt them to your files##
 
-#divido il df in due, uno con i loci bialleleici e uno con quelli triallelici
-markers<-read.csv("inputfamilias_DNA_db_num_no_Linkage_Disequilibrium.csv", header = FALSE, sep = ';')
+#Split the dataframe into two, one with biallelic loci and one with triallelic ones
+markers<-read.csv("merkers_no_Linkage_Disequilibrium.csv", header = FALSE, sep = ';')
 markers<-markers[,1:2]
 marker2<-markers[1:14472,]
 marker3<-markers[14473:14576,]
 
 loc=as.list(NULL)
 
-#creo la lista con tutti i loci per cui ogni elemento della lista rappresenta un locus
-#ogni elemento della lista è caratterizzato da 3 variabili:
-#$name (il codice identificativo del marcatore), $alleles (il nome delle alternative alleliche), $afreq (la frequenza di ciascun allele)
+#Create a list with all the loci where each element of the list represents a locus
+#Each element of the list is characterized by 3 variables:
+#$name (the identifier of the marker), $alleles (the name of the allelic alternatives), $afreq (the frequency of each allele)
 for (i in 0:4823){
   a=(3*i)+1
   b=a+1
@@ -129,24 +126,24 @@ for (i in 0:25){
 }
 
 
-#--------Pulizia ambiente-------------#
+#--------Environment cleaning-------------#
 rm(list = ls()[!(ls() %in% c("ped", "loc"))])
 
 #############################################################
 
   #------------------------------------------------#  
-  #|  costruzione di una lista di 1000 elementi   |#
-  #|  ciascuno dei quali rappresenta una famiglia.|#
-  #|  Il df iniziale viene quindi frammentato in  |#
-  #|  una singola lista a più elementi            |#
+  #|  Build a list of 1000 elements               |#
+  #|  each representing a family.                 |#
+  #|  The initial df is then fragmented into      |#
+  #|  a single list with multiple elements        |#
   #------------------------------------------------#
 
-# L'oggetto pedlist è una lista di elementi ped che rappresentano ciascuno una famiglia di 18 individui.  
-# I data.frame contenenti le informazioni genotipiche degli individui che compongono ciascuna famiglia devono 
-# essere obbligatoriamente convertiti in elementi ped affinchè pssano essere l'argomento della funzione ibdEstimate 
-# dello step successivo.                                                                                            
+# The pedlist object is a list of ped elements, each representing a family of 18 individuals.  
+# The data.frames containing the genotype information of the individuals composing each family must 
+# be necessarily converted into ped elements so that they can be the argument of the ibdEstimate function 
+# of the next step.                                                                                            
 
-##Vedi file Ped.R per la spiegazione del comando as.ped  
+##See Ped.R file for explanation of as.ped command  
 
 fam<-data.frame()
 pedlist<-list()
@@ -163,15 +160,15 @@ for (j in 1:max(ped$famid)){
 }
   
 
-#--------Pulizia ambiente-------------#
+#--------Environment cleaning-------------#
 rm(list = ls()[!(ls() %in% "pedlist")])
 
 #---------------------------------------------------------------------------------------------------------------#
 #|                                    IBD and LR estimation and triangle plot                                  |#  
 #|                                                                                                             |#
-#| Considerando tutte le possibili coppie di individui all'interno di una famiglia composta da 18 individui    |#
-#| viene costruito un ciclo che calcoli i valori k0,k1,k2 della relazione tra ciascuna coppia                  |#
-#| e il valore di LR associato                                                                                 |#
+#| Considering all possible pairs of individuals within a family composed of 18 individuals                    |#
+#| a loop is built to calculate the values k0, k1, k2 of the relationship between each pair                    |#
+#| and the associated LR value                                                                                   |#
 #---------------------------------------------------------------------------------------------------------------#
 checkpairwise_result <- data.frame()
 for (i in 1:length(pedlist)){
@@ -180,8 +177,9 @@ for (i in 1:length(pedlist)){
 
 #---------------------------------------------------------------------------------------------------------------#
 #|                                                         RMSE                                                |#  
-#|                                                                                                             |#
-#|                                                                                                             |#
+#|  The Root Mean Square Error (RMSE) is a measure of the discrepancy between estimated and observed values.   |#
+#|  In this context, it is used to associate the values of k0, k1, and k2 obtained from checkpairwise          |#
+#|  with the corresponding relationship label.                                                                 |#
 #---------------------------------------------------------------------------------------------------------------#
 kinshipIBD <- data.frame("kinship" = c("UN", "PC", "FS", "HS,ZI,GP", "CO,PP,GG", "1C1R,PPP","C2"), "k0" = c(1,0,0.25,0.5,0.75,0.875,0.9375), "k1" = c(0,1,0.5,0.5,0.25,0.125,0.0625), "k2" = c(0,0,0.25,0,0,0,0))
 
@@ -198,5 +196,5 @@ for (i in 1:nrow(checkpairwise_result)) {
   checkpairwise_result$kinship[i] <- kin
 }
 
-#--------Pulizia ambiente-------------#
+#--------Environment cleaning-------------#
 rm(list = ls()[!(ls() %in% c("pedlist", "kinshipIBD", "checkpairwise_result"))])
