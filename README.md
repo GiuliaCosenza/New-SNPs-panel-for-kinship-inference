@@ -9,6 +9,7 @@ If you haven't already, you'll need to install R. You can download it from the [
 
 ***
 ### 1. Linkage disequilibrium Pruning 🔗✂️  
+This script is designed to identify independent genetic variants by assessing linkage disequilibrium.  
 #### 1.1 Install Required Packages
 Make sure you have the required R packages installed. You can install them by running the following command in your R console:
 ```R
@@ -31,7 +32,8 @@ This script utilizes one input file containing the rs identifiers of the markers
 ...
 
 ---
-### 2. IBD and LR estimation 👨‍👩‍👧‍👦
+### 2. IBD and LR estimation 👨‍👩‍👧‍👦  
+This R script s designed to identify relationships between individuals based on their genotypic data.  
 #### 2.1 Install Required Packages
 Make sure you have the required R packages installed. You can install them by running the following command in your R console:
 
