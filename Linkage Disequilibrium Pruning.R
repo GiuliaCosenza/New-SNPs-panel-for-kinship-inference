@@ -3,23 +3,10 @@
 ##             LINKAGE DISEQUILIBRIUM                ##
 #######################################################
 
-############################################################
-##                                                        ##
-## The input file is a list of markers identified by rs   ##
-## number or their position on the chromosome.            ##
-## Only markers on the same chromosome and biallelic      ##
-## can be evaluated.                                      ##
-##                                                        ##
-############################################################
-
-#----------------------------------------------------------------#
-#|             Installation and loading of essential            |#
-#|                        packages                              |#
-#----------------------------------------------------------------#
-
-install.packages("LDlinkR")
-install.packages("remotes")
-remotes::install_github("CBIIT/LDlinkR")
+#--------------------------------------------------------#
+#|                   Loading essential                  |#
+#|                        packages                      |#
+#--------------------------------------------------------#
 library(LDlinkR)
 
 
