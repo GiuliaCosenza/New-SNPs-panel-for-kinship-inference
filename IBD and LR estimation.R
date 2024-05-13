@@ -34,14 +34,6 @@
 #------------------------------------------------#
 #|        Load essential packages               |#
 #------------------------------------------------#
-
-#install.packages("pedbuildr")
-#install.packages("devtools")
-#install.packages("shiny")
-#install.packages("stringi")
-#install.packages("Rtools")
-#devtools::install_github("magnusdv/pedbuildr")
-#devtools::install_github("magnusdv/forrel")
 library('pedtools')
 library("pedbuildr")
 library('usethis')
