@@ -47,25 +47,11 @@ library('forrel')
 #------------------------------------------------#
 
 ##Load the file containing genetic information of 18000 individuals (dataframe 18000*10381)
-file<-read.csv("genotypes.csv", sep = ',', header = FALSE)
+ped<-read.csv("genotypes.csv", sep = ',', header = TRUE)
 
-##Build a new dataframe from the first one with correctly renamed columns 
-##and eliminating parent information (mid and fid always =0)
-ped<-as.data.frame(file[,1:2])
-ped<-cbind(ped, rep(0,length(ped[,1])))
-ped<-cbind(ped, rep(0,length(ped[,1])))
-ped<-cbind(ped, file[,5])
-names(ped)<-c("famid", "id", "fid", "mid", "sex")
-
-genotypes<-file[,6:length(file[1,])]
-
-vect<-c(1:length(genotypes))*2
-vect<-vect[1:(length(vect)/2)]
-for ( i in vect){
-  ped<-cbind(ped, as.data.frame(paste(genotypes[,i], genotypes[,i-1], sep = '/')))
-}
-names<-read.csv("Header_familias.csv", sep = ';')
-names(ped)[6:length(ped[1,])]<-names(names)
+##Remove parent information (mid and fid always =0)
+ped[, 2] <- 0
+ped[, 3] <- 0
 
 #--------Environment cleaning-------------#
 rm(list = ls()[!(ls() %in% "ped")])
@@ -86,15 +72,15 @@ ped<-ped[,-c(removed[,2])]
 #Split the dataframe into two, one with biallelic loci and one with triallelic ones
 markers<-read.csv("merkers_no_Linkage_Disequilibrium.csv", header = FALSE, sep = ';')
 markers<-markers[,1:2]
-marker2<-markers[1:14472,]
-marker3<-markers[14473:14576,]
+marker2<-markers[1:14472,]   ## (14472/3) = 4824 biallelic markers
+marker3<-markers[14473:nrow(markers),] ## (nrow(markers)-14472)/4 = 26 triallelic markers
 
 loc=as.list(NULL)
 
 #Create a list with all the loci where each element of the list represents a locus
 #Each element of the list is characterized by 3 variables:
 #$name (the identifier of the marker), $alleles (the name of the allelic alternatives), $afreq (the frequency of each allele)
-for (i in 0:4823){
+for (i in 0:(4824 - 1)){
   a=(3*i)+1
   b=a+1
   c=b+1
@@ -105,7 +91,7 @@ for (i in 0:4823){
   
 }
 
-for (i in 0:25){
+for (i in 0:(26 - 1){
   a=(4*i)+1
   b=a+1
   c=b+1
