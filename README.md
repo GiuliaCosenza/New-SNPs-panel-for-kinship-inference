@@ -3,7 +3,7 @@
 ## Description
 This repository contains supporting materials for an upcoming article. It includes R and Python code for reproducing the results presented in the article.
 
-## R scripts  
+## R 📊 scripts  
 ### Install R
 If you haven't already, you'll need to install R. You can download it from the [official R website](https://www.r-project.org/).
 
@@ -77,7 +77,7 @@ rs3;
 ...
 
 ---
-## Python scripts 
+## Python 🐍 scripts 
 
 
 
