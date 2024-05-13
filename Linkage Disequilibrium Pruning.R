@@ -55,7 +55,7 @@ for (q in 1:22) {
                                   pop = "ALL",
                                   r2_threshold = "0.1", 
                                   maf_threshold = "0.01", 
-                                  token = "4fb747e9d50d", 
+                                  token = "token", 
                                   file = FALSE,
                                   genome_build = "grch37"
   ))
